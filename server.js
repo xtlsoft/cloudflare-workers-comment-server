@@ -64,6 +64,11 @@ async function handleRequest(request) {
     case "GET":
       let get_resp = await kv.get(article);
       if (get_resp.error) get_resp = [];
+      for (let k in get_resp) {
+        if (get_resp[k]['hide_mail']) {
+          get_resp[k]['email'] = '(hidden)';
+        }
+      }
       let get_response = new Response(JSON.stringify(get_resp));
       get_response.headers.set('content-type', 'application/json');
       return get_response;
